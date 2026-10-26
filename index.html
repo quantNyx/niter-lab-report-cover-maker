@@ -420,11 +420,11 @@
 
       .page {
         position: relative !important;
-        width: auto;
-        height: 246.2mm;
-        min-height: 246.2mm;
-        margin: 0;
-        padding: 0;
+        width: calc(100% - 8mm);
+        height: 236mm;
+        min-height: 236mm;
+        margin: 4mm auto;
+        padding: 8mm;
         box-shadow: none;
         transform: none !important;
       }
@@ -911,7 +911,7 @@
     new ResizeObserver(updatePreviewScale).observe(preview);
     updatePreviewScale();
     document.getElementById("download-pdf").addEventListener("click", () => {
-      status.textContent = "In the print dialog, choose Save as PDF.";
+      status.textContent = "Choose Save as PDF. In More settings, turn off Headers and footers for a clean cover.";
       window.print();
     });
     document.getElementById("download-doc").addEventListener("click", () => {

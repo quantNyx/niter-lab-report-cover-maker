@@ -25,7 +25,7 @@ No installation, build step, or dependencies are required.
 2. Fill in the student and teacher details.
 3. Review the live cover preview.
 4. Choose an export format:
-   - **PDF:** In the browser print dialog, select **Save as PDF**.
+   - **PDF:** In the browser print dialog, select **Save as PDF**. Under **More settings**, turn off **Headers and footers** to remove the browser date, page title, URL, and page number.
    - **Word (.doc):** Download a Word-compatible document.
    - **PNG image** or **JPG image:** Download a high-resolution image of the cover.
 
