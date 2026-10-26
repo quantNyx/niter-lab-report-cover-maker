@@ -7,7 +7,7 @@
   <style>
     @page {
       size: A4 portrait;
-      margin: 1in;
+      margin: 0;
     }
 
     * {
@@ -27,7 +27,15 @@
       min-height: 246.2mm;
       display: flex;
       flex-direction: column;
+    }
+
+    .page::before {
+      position: absolute;
+      inset: 8mm;
       border: 1.2px solid #40337b;
+      content: "";
+      pointer-events: none;
+      z-index: 2;
     }
 
     .page-watermark {
@@ -412,19 +420,25 @@
         overflow: visible;
       }
 
+      .preview {
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+      }
+
       .paper-stage {
-        width: 100% !important;
-        height: auto !important;
+        width: 210mm !important;
+        height: 297mm !important;
         margin: 0;
       }
 
       .page {
         position: relative !important;
-        width: calc(100% - 8mm);
-        height: 236mm;
-        min-height: 236mm;
-        margin: 4mm auto;
-        padding: 8mm;
+        width: 210mm;
+        height: 297mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 25.4mm;
         box-shadow: none;
         transform: none !important;
       }
@@ -893,6 +907,62 @@
       });
     }
 
+    async function makePdfBlob() {
+      const imageBlob = await makeImageBlob("image/jpeg");
+      const imageBytes = new Uint8Array(await imageBlob.arrayBuffer());
+      const encoder = new TextEncoder();
+      const parts = [];
+      const objectOffsets = [0];
+      let fileLength = 0;
+      const append = (part) => {
+        const bytes = typeof part === "string" ? encoder.encode(part) : part;
+        parts.push(bytes);
+        fileLength += bytes.byteLength;
+      };
+      const beginObject = (number) => {
+        objectOffsets[number] = fileLength;
+        append(`${number} 0 obj\n`);
+      };
+
+      append(new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x0a, 0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]));
+      beginObject(1);
+      append("<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+      beginObject(2);
+      append("<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+      beginObject(3);
+      append("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.276 841.89] /Resources << /XObject << /Cover 5 0 R >> >> /Contents 4 0 R >>\nendobj\n");
+
+      const content = encoder.encode("q\n595.276 0 0 841.89 0 0 cm\n/Cover Do\nQ\n");
+      beginObject(4);
+      append(`<< /Length ${content.byteLength} >>\nstream\n`);
+      append(content);
+      append("\nendstream\nendobj\n");
+
+      beginObject(5);
+      append(`<< /Type /XObject /Subtype /Image /Width 2480 /Height 3508 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imageBytes.byteLength} >>\nstream\n`);
+      append(imageBytes);
+      append("\nendstream\nendobj\n");
+
+      const crossReferenceOffset = fileLength;
+      append(`xref\n0 ${objectOffsets.length}\n0000000000 65535 f \n`);
+      for (let number = 1; number < objectOffsets.length; number += 1) {
+        append(`${String(objectOffsets[number]).padStart(10, "0")} 00000 n \n`);
+      }
+      append(`trailer\n<< /Size ${objectOffsets.length} /Root 1 0 R >>\nstartxref\n${crossReferenceOffset}\n%%EOF`);
+      return new Blob(parts, { type: "application/pdf" });
+    }
+
+    async function downloadPdf() {
+      status.textContent = "Preparing your one-page A4 PDF…";
+      try {
+        const blob = await makePdfBlob();
+        downloadBlob(blob, getFileName("pdf"));
+        status.textContent = "One-page A4 PDF downloaded.";
+      } catch (error) {
+        status.textContent = error.message;
+      }
+    }
+
     async function downloadImage(format) {
       status.textContent = "Preparing image…";
       try {
@@ -910,10 +980,7 @@
     window.addEventListener("resize", updatePreviewScale);
     new ResizeObserver(updatePreviewScale).observe(preview);
     updatePreviewScale();
-    document.getElementById("download-pdf").addEventListener("click", () => {
-      status.textContent = "Choose Save as PDF. In More settings, turn off Headers and footers for a clean cover.";
-      window.print();
-    });
+    document.getElementById("download-pdf").addEventListener("click", downloadPdf);
     document.getElementById("download-doc").addEventListener("click", () => {
       const wordDocument = new Blob(["\ufeff", makeWordDocument()], { type: "application/msword" });
       downloadBlob(wordDocument, getFileName("doc"));

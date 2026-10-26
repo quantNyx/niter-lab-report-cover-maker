@@ -7,7 +7,7 @@ A browser-based tool for creating a print-ready NITER lab report cover page. Fil
 - NITER-branded cover layout with department selection for TE, CSE, EEE, IPE, and FDAE
 - Decorative page border and subtle centered NITER watermark
 - Live preview formatted for A4 paper with 1-inch margins
-- Export as PDF, a Word-compatible `.doc` file, PNG, or JPG
+- Export as a single-page, 300 DPI A4 PDF, a Word-compatible `.doc` file, PNG, or JPG
 - Responsive editor layout for desktop and mobile screens
 - Runs locally in your browser; the project does not send form data to a server
 
@@ -25,7 +25,7 @@ No installation, build step, or dependencies are required.
 2. Fill in the student and teacher details.
 3. Review the live cover preview.
 4. Choose an export format:
-   - **PDF:** In the browser print dialog, select **Save as PDF**. Under **More settings**, turn off **Headers and footers** to remove the browser date, page title, URL, and page number.
+   - **PDF:** Download a single-page, high-resolution A4 PDF directly; browser print headers and footers are not added.
    - **Word (.doc):** Download a Word-compatible document.
    - **PNG image** or **JPG image:** Download a high-resolution image of the cover.
 
