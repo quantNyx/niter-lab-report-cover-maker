@@ -23,9 +23,29 @@
     }
 
     .page {
+      position: relative;
       min-height: 246.2mm;
       display: flex;
       flex-direction: column;
+      border: 1.2px solid #40337b;
+    }
+
+    .page-watermark {
+      position: absolute;
+      z-index: 0;
+      top: 54%;
+      left: 50%;
+      width: 150mm;
+      max-width: none;
+      height: auto;
+      opacity: 0.09;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+    }
+
+    .page > :not(.page-watermark) {
+      position: relative;
+      z-index: 1;
     }
 
     .app-header {
@@ -399,7 +419,7 @@
       }
 
       .page {
-        position: static !important;
+        position: relative !important;
         width: auto;
         height: 246.2mm;
         min-height: 246.2mm;
@@ -573,6 +593,7 @@
       </div>
       <div class="paper-stage" id="paper-stage">
         <main class="page" id="cover-page">
+          <img class="page-watermark" src="niter-logo.png" alt="" aria-hidden="true">
           <header class="institution">
             <img class="institution-logo" src="niter-logo.png" alt="NITER emblem">
             <h1 class="institution-name">NATIONAL INSTITUTE OF TEXTILE ENGINEERING &amp; RESEARCH</h1>
@@ -704,7 +725,7 @@
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 
-    function getLogoDataUrl() {
+    function getLogoDataUrl(opacity = 1) {
       const image = document.querySelector(".institution-logo");
       const canvas = document.createElement("canvas");
       canvas.width = image.naturalWidth;
@@ -713,44 +734,87 @@
       if (!context || !image.naturalWidth) {
         throw new Error("The NITER logo could not be loaded for export.");
       }
+      context.globalAlpha = opacity;
       context.drawImage(image, 0, 0);
       return canvas.toDataURL("image/png");
     }
 
     function makeWordDocument() {
-      const cover = document.getElementById("cover-page").cloneNode(true);
-      cover.removeAttribute("id");
-      cover.querySelector(".institution-logo").src = getLogoDataUrl();
-      cover.style.width = "auto";
-      cover.style.height = "246.2mm";
-      cover.style.minHeight = "246.2mm";
-      cover.style.margin = "0";
-      cover.style.padding = "0";
-      cover.style.boxShadow = "none";
+      const value = (name, placeholder) => {
+        const field = form.elements.namedItem(name);
+        return field.value.trim() || placeholder;
+      };
+      const department = departments[form.elements.namedItem("department").value];
+      const teacherDepartment = departments[form.elements.namedItem("teacherDepartment").value] || "[Teacher Department]";
+      const logo = getLogoDataUrl();
+      const watermark = getLogoDataUrl(0.09);
+      const escapeHtml = (text) => text.replace(/[&<>"']/g, (character) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+      const rows = [
+        ["Course Code", value("courseCode", "[Course Code]")],
+        ["Course Name", value("courseName", "[Course Name]")],
+        ["Level-Term", value("levelTerm", "[Level-Term]")],
+        ["Experiment No", value("experimentNumber", "[Experiment No]")],
+        ["Experiment Name", value("experimentName", "[Experiment Name]")],
+        ["Date of Submission", value("submissionDate", "[DD.MM.YYYY]")]
+      ];
+      const metadataRows = rows.map(([label, text]) =>
+        `<tr><td style="width:42mm;padding:0 0 4mm;vertical-align:top;white-space:nowrap">${label}</td><td style="width:5mm;padding:0 0 4mm;text-align:center;vertical-align:top">:</td><td style="padding:0 0 4mm;vertical-align:top">${escapeHtml(text)}</td></tr>`
+      ).join("");
+      const studentDetails = [
+        ["Name", value("studentName", "[Student Name]")],
+        ["ID", value("studentId", "[Student ID]")],
+        ["Session", value("session", "[YYYY-YYYY]")],
+        ["Section", value("section", "[Section]")],
+        ["Group", value("group", "[Group]")]
+      ].map(([label, text]) => `${label}: ${escapeHtml(text)}`).join("<br>");
+      const teacherDetails = [
+        value("teacherName", "[Teacher Name]"),
+        value("designation", "[Designation]"),
+        `Department of ${escapeHtml(teacherDepartment)}`
+      ].join("<br>");
       const styles = `
         @page { size: A4; margin: 25.4mm; }
-        * { box-sizing: border-box; }
-        html, body { margin: 0; color: #111; font-family: "Times New Roman", Times, serif; font-size: 12pt; }
-        .page { display: flex; flex-direction: column; }
-        .institution { text-align: center; }
-        .institution-logo { display: block; width: 25mm; height: auto; max-height: 25mm; margin: 0 auto 3mm; }
-        .institution-name { margin: 0; font-size: 13.5pt; font-weight: 700; line-height: 1.15; white-space: nowrap; }
-        .acronym { margin: 1mm 0 0; font-size: 14pt; font-weight: 700; line-height: 1.15; }
-        .address { margin: 1mm 0 0; font-size: 11pt; line-height: 1.15; }
-        .department { margin: 3mm 0 0; font-size: 12pt; font-weight: 700; line-height: 1.15; }
-        .metadata { margin-top: 12mm; display: grid; grid-template-columns: 42mm 5mm minmax(0, 1fr); row-gap: 4mm; align-items: start; }
-        .metadata-label { white-space: nowrap; }
-        .metadata-colon { text-align: center; }
-        .metadata-value { min-width: 0; }
-        .evaluation { height: 30mm; flex: 0 0 30mm; margin-top: 12mm; border: 1px solid #222; padding: 3mm 4mm; }
-        .evaluation-label { margin: 0; color: #c00000; font-weight: 700; }
-        .signoff { width: 100%; margin-top: auto; border-collapse: collapse; table-layout: fixed; }
-        .signoff td { width: 50%; height: 57mm; border: 1px solid #222; vertical-align: top; padding: 5mm; }
-        .signoff-right { text-align: center; }
-        .signoff-heading { margin: 0 0 5mm; text-align: center; font-weight: 700; text-decoration: underline; }
-        .student-details, .teacher-details { margin: 0; line-height: 1.7; }
+        body { position: relative; margin: 0; color: #111; font-family: "Times New Roman", Times, serif; font-size: 12pt; }
+        table { border-collapse: collapse; }
       `;
-      return `<!doctype html><html><head><meta charset="utf-8"><style>${styles}</style></head><body>${cover.outerHTML}</body></html>`;
+      return `<!doctype html><html><head><meta charset="utf-8"><style>${styles}</style></head><body>
+        <img src="${watermark}" alt="" width="567" height="567" style="position:absolute;top:65mm;left:50%;width:150mm;height:150mm;margin-left:-75mm;z-index:-1">
+        <table style="width:100%;height:246mm;table-layout:fixed;border:1.2px solid #40337b" cellpadding="0" cellspacing="0">
+          <tr><td style="height:70mm;text-align:center;vertical-align:top">
+            <img src="${logo}" alt="NITER emblem" width="94" height="94" style="display:block;width:25mm;height:25mm;margin:0 auto 3mm">
+            <p style="margin:0;font-size:13.5pt;font-weight:bold;line-height:1.15">NATIONAL INSTITUTE OF TEXTILE ENGINEERING &amp; RESEARCH</p>
+            <p style="margin:1mm 0 0;font-size:14pt;font-weight:bold">(NITER)</p>
+            <p style="margin:1mm 0 0;font-size:11pt">Nayarhat, Savar, Dhaka-1350</p>
+            <p style="margin:3mm 0 0;font-size:12pt;font-weight:bold">Department of ${escapeHtml(department)}</p>
+          </td></tr>
+          <tr><td style="height:100mm;vertical-align:top">
+            <table style="width:100%;margin-top:12mm;table-layout:fixed" cellpadding="0" cellspacing="0">${metadataRows}</table>
+            <table style="width:100%;height:30mm;margin-top:8mm;border:1px solid #222" cellpadding="0" cellspacing="0">
+              <tr><td style="padding:3mm 4mm;color:#c00000;font-weight:bold;vertical-align:top">Remarks:</td></tr>
+            </table>
+          </td></tr>
+          <tr><td style="height:76mm;vertical-align:bottom">
+            <table style="width:100%;height:57mm;table-layout:fixed;border:1px solid #222" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="width:50%;padding:5mm;vertical-align:top;border:1px solid #222">
+                  <p style="margin:0 0 5mm;text-align:center;font-weight:bold;text-decoration:underline">Submitted By</p>
+                  <p style="margin:0;line-height:1.7">${studentDetails}</p>
+                </td>
+                <td style="width:50%;padding:5mm;text-align:center;vertical-align:top;border:1px solid #222">
+                  <p style="margin:0 0 5mm;text-align:center;font-weight:bold;text-decoration:underline">Submitted To</p>
+                  <p style="margin:0;line-height:1.7">${teacherDetails}</p>
+                </td>
+              </tr>
+            </table>
+          </td></tr>
+        </table>
+      </body></html>`;
     }
 
     function makeImageBlob(format) {
@@ -763,7 +827,9 @@
       const page = coverPage.cloneNode(true);
       page.removeAttribute("id");
       page.style.cssText = `position:relative!important;top:auto!important;left:auto!important;width:${pageWidth}px!important;height:${pageHeight}px!important;min-height:${pageHeight}px!important;margin:0!important;padding:96px!important;transform:none!important;box-shadow:none!important;`;
-      page.querySelector(".institution-logo").src = getLogoDataUrl();
+      const logo = getLogoDataUrl();
+      page.querySelector(".institution-logo").src = logo;
+      page.querySelector(".page-watermark").src = getLogoDataUrl(0.09);
 
       const svg = document.createElementNS(svgNamespace, "svg");
       svg.setAttribute("xmlns", svgNamespace);

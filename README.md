@@ -5,6 +5,7 @@ A browser-based tool for creating a print-ready NITER lab report cover page. Fil
 ## Features
 
 - NITER-branded cover layout with department selection for TE, CSE, EEE, IPE, and FDAE
+- Decorative page border and subtle centered NITER watermark
 - Live preview formatted for A4 paper with 1-inch margins
 - Export as PDF, a Word-compatible `.doc` file, PNG, or JPG
 - Responsive editor layout for desktop and mobile screens
