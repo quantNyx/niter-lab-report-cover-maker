@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NITER CSE Lab Report Cover Page</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 1in;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      color: #111;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+    }
+
+    .page {
+      min-height: 246.2mm;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-header {
+      max-width: 1240px;
+      margin: 0 auto 22px;
+    }
+
+    .app-eyebrow {
+      margin: 0 0 5px;
+      color: #61558f;
+      font: 700 11px/1.4 Arial, sans-serif;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .app-title {
+      margin: 0;
+      color: #20202b;
+      font: 700 26px/1.2 Arial, sans-serif;
+      letter-spacing: -0.03em;
+    }
+
+    .app-description {
+      margin: 7px 0 0;
+      color: #666675;
+      font: 14px/1.5 Arial, sans-serif;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .controls {
+      padding: 22px;
+      background: #fff;
+      border: 1px solid #e3e2e9;
+      border-radius: 12px;
+      box-shadow: 0 8px 28px rgb(27 25 42 / 5%);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    .controls h2 {
+      margin: 0 0 6px;
+      font-family: Arial, sans-serif;
+      color: #23222d;
+      font-size: 20px;
+    }
+
+    .controls-intro {
+      margin: 0 0 20px;
+      color: #73727e;
+      line-height: 1.45;
+    }
+
+    .form-section {
+      margin-top: 20px;
+      padding-top: 17px;
+      border-top: 1px solid #ecebf0;
+    }
+
+    .form-section h3 {
+      margin: 0 0 12px;
+      color: #40337b;
+      font: 700 11px/1.4 Arial, sans-serif;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 12px;
+      row-gap: 11px;
+    }
+
+    .field-wide {
+      grid-column: 1 / -1;
+    }
+
+    .controls label {
+      display: block;
+      margin: 0 0 5px;
+      color: #353440;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .controls input,
+    .controls select {
+      width: 100%;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid #d8d7df;
+      border-radius: 6px;
+      background: #fff;
+      color: #292833;
+      font: 13px Arial, sans-serif;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    .controls input:focus,
+    .controls select:focus {
+      border-color: #6252a6;
+      outline: none;
+      box-shadow: 0 0 0 3px rgb(98 82 166 / 14%);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .actions button {
+      min-height: 40px;
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 6px;
+      background: #f4f2fa;
+      color: #40337b;
+      font: 600 13px Arial, sans-serif;
+      cursor: pointer;
+    }
+
+    .actions button:first-child {
+      background: #40337b;
+      color: #fff;
+    }
+
+    .actions button:not(:first-child):hover {
+      background: #eae7f5;
+    }
+
+    .actions button:hover {
+      filter: brightness(0.97);
+    }
+
+    .export-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .export-grid button {
+      background: #f4f2fa;
+      color: #40337b;
+    }
+
+    .export-status {
+      min-height: 1.4em;
+      margin: 10px 0 0;
+      color: #565461;
+      font: 12px/1.4 Arial, sans-serif;
+    }
+
+    .preview {
+      min-width: 0;
+    }
+
+    .paper-stage {
+      position: relative;
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 2px 10px;
+      color: #575663;
+      font: 600 12px/1.4 Arial, sans-serif;
+    }
+
+    .preview-badge {
+      padding: 4px 8px;
+      border: 1px solid #e2e0e9;
+      border-radius: 20px;
+      background: #fff;
+      color: #6a6975;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .institution {
+      text-align: center;
+    }
+
+    .institution-logo {
+      display: block;
+      width: 25mm;
+      height: auto;
+      max-height: 25mm;
+      margin: 0 auto 3mm;
+    }
+
+    .institution-name {
+      margin: 0;
+      font-size: 13.5pt;
+      font-weight: 700;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
+
+    .acronym {
+      margin: 1mm 0 0;
+      font-size: 14pt;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .address {
+      margin: 1mm 0 0;
+      font-size: 11pt;
+      line-height: 1.15;
+    }
+
+    .department {
+      margin: 3mm 0 0;
+      font-size: 12pt;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .metadata {
+      margin-top: 12mm;
+      display: grid;
+      grid-template-columns: 42mm 5mm minmax(0, 1fr);
+      column-gap: 0;
+      row-gap: 4mm;
+      align-items: start;
+    }
+
+    .metadata-label {
+      white-space: nowrap;
+    }
+
+    .metadata-colon {
+      text-align: center;
+    }
+
+    .metadata-value {
+      min-width: 0;
+    }
+
+    .evaluation {
+      height: 30mm;
+      flex: 0 0 30mm;
+      margin-top: 12mm;
+      border: 1px solid #222;
+      padding: 3mm 4mm;
+    }
+
+    .evaluation-label {
+      margin: 0;
+      color: #c00000;
+      font-weight: 700;
+    }
+
+    .signoff {
+      width: 100%;
+      margin-top: auto;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .signoff td {
+      width: 50%;
+      height: 57mm;
+      border: 1px solid #222;
+      vertical-align: top;
+      padding: 5mm;
+    }
+
+    .signoff-right {
+      text-align: center;
+    }
+
+    .signoff-heading {
+      margin: 0 0 5mm;
+      text-align: center;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 1.5px;
+    }
+
+    .student-details {
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .teacher-details {
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    @media screen {
+      body {
+        min-height: 100vh;
+        background: #f5f4f8;
+        padding: 30px 24px 40px;
+      }
+
+      .preview {
+        overflow: hidden;
+        padding: 12px;
+        border: 1px solid #e3e2e9;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 8px 28px rgb(27 25 42 / 5%);
+      }
+
+      .page {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 25.4mm;
+        background: #fff;
+        box-shadow: 0 2px 14px rgb(0 0 0 / 14%);
+        transform: scale(var(--preview-scale, 1));
+        transform-origin: top left;
+      }
+    }
+
+    @media print {
+      .app-header,
+      body {
+        padding: 0;
+        background: #fff;
+      }
+
+      .app-header {
+        display: none;
+      }
+
+      .preview-header {
+        display: none;
+      }
+
+      .controls {
+        display: none;
+      }
+
+      .workspace,
+      .preview {
+        display: block;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        overflow: visible;
+      }
+
+      .paper-stage {
+        width: 100% !important;
+        height: auto !important;
+        margin: 0;
+      }
+
+      .page {
+        position: static !important;
+        width: auto;
+        height: 246.2mm;
+        min-height: 246.2mm;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        transform: none !important;
+      }
+    }
+
+    @media screen and (max-width: 800px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        max-width: 700px;
+      }
+    }
+
+    @media screen and (max-width: 520px) {
+      body {
+        padding: 20px 12px;
+      }
+
+      .app-title {
+        font-size: 22px;
+      }
+
+      .controls {
+        padding: 17px;
+      }
+
+      .field-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field-wide {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <p class="app-eyebrow">NITER · Report tools</p>
+    <h1 class="app-title">Lab Report Cover Maker</h1>
+    <p class="app-description">Enter your details to create and download a polished, print-ready cover page.</p>
+  </header>
+  <div class="workspace">
+    <form class="controls" id="cover-form">
+      <h2>Build your cover page</h2>
+      <p class="controls-intro">Your preview updates as you fill in the details.</p>
+
+      <section class="form-section">
+        <h3>Course &amp; experiment</h3>
+        <div class="field-grid">
+          <div class="field field-wide">
+            <label for="department-select">Department</label>
+            <select id="department-select" name="department">
+              <option value="TE">TE — Textile Engineering</option>
+              <option value="CSE" selected>CSE — Computer Science and Engineering</option>
+              <option value="EEE">EEE — Electrical and Electronic Engineering</option>
+              <option value="IPE">IPE — Industrial and Production Engineering</option>
+              <option value="FDAE">FDAE — Fashion Design and Apparel Engineering</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="course-code">Course Code</label>
+            <input id="course-code" name="courseCode" placeholder="e.g., CSE-1212" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="course-name">Course Name</label>
+            <input id="course-name" name="courseName" placeholder="e.g., Digital Logic Design Lab">
+          </div>
+          <div class="field">
+            <label for="level-term">Level-Term</label>
+            <input id="level-term" name="levelTerm" placeholder="e.g., 1-2">
+          </div>
+          <div class="field">
+            <label for="experiment-number">Experiment No</label>
+            <input id="experiment-number" name="experimentNumber" placeholder="e.g., 05">
+          </div>
+          <div class="field field-wide">
+            <label for="experiment-name">Experiment Name</label>
+            <input id="experiment-name" name="experimentName" placeholder="Enter the experiment title">
+          </div>
+          <div class="field field-wide">
+            <label for="submission-date">Date of Submission</label>
+            <input id="submission-date" name="submissionDate" placeholder="DD.MM.YYYY">
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h3>Student details</h3>
+        <div class="field-grid">
+          <div class="field">
+            <label for="student-name">Student Name</label>
+            <input id="student-name" name="studentName" placeholder="Your full name">
+          </div>
+          <div class="field">
+            <label for="student-id">Student ID</label>
+            <input id="student-id" name="studentId" placeholder="Your student ID">
+          </div>
+          <div class="field">
+            <label for="session">Session</label>
+            <input id="session" name="session" placeholder="e.g., 2024-2025">
+          </div>
+          <div class="field">
+            <label for="section">Section</label>
+            <input id="section" name="section" placeholder="Your section">
+          </div>
+          <div class="field field-wide">
+            <label for="group">Group</label>
+            <input id="group" name="group" placeholder="Your group">
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h3>Teacher</h3>
+        <div class="field-grid">
+          <div class="field field-wide">
+            <label for="teacher-name">Teacher Name</label>
+            <input id="teacher-name" name="teacherName" placeholder="Teacher's full name">
+          </div>
+          <div class="field field-wide">
+            <label for="designation">Teacher Designation</label>
+            <select id="designation" name="designation">
+              <option value="">Select a designation</option>
+              <option>Lecturer</option>
+              <option>Assistant Professor</option>
+              <option>Associate Professor</option>
+              <option>Professor</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field field-wide">
+            <label for="teacher-department">Teacher's Department / Faculty</label>
+            <select id="teacher-department" name="teacherDepartment">
+              <option value="">Select teacher's department</option>
+              <option value="TE">TE — Textile Engineering</option>
+              <option value="CSE" selected>CSE — Computer Science and Engineering</option>
+              <option value="EEE">EEE — Electrical and Electronic Engineering</option>
+              <option value="IPE">IPE — Industrial and Production Engineering</option>
+              <option value="FDAE">FDAE — Fashion Design and Apparel Engineering</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h3>Download cover</h3>
+        <div class="actions">
+          <button type="button" id="download-pdf">Download PDF</button>
+          <div class="export-grid">
+            <button type="button" id="download-doc">Word (.doc)</button>
+            <button type="button" id="download-png">PNG image</button>
+            <button type="button" id="download-jpg">JPG image</button>
+          </div>
+        </div>
+        <p class="export-status" id="export-status" role="status" aria-live="polite"></p>
+      </section>
+    </form>
+
+    <div class="preview">
+      <div class="preview-header">
+        <span>Live preview</span>
+        <span class="preview-badge">A4 · 1-inch margins</span>
+      </div>
+      <div class="paper-stage" id="paper-stage">
+        <main class="page" id="cover-page">
+          <header class="institution">
+            <img class="institution-logo" src="niter-logo.png" alt="NITER emblem">
+            <h1 class="institution-name">NATIONAL INSTITUTE OF TEXTILE ENGINEERING &amp; RESEARCH</h1>
+            <p class="acronym">(NITER)</p>
+            <p class="address">Nayarhat, Savar, Dhaka-1350</p>
+            <p class="department">Department of <span data-output="department">Computer Science and Engineering</span></p>
+          </header>
+
+          <section class="metadata" aria-label="Experiment information">
+            <div class="metadata-label">Course Code</div><div class="metadata-colon">:</div><div class="metadata-value" data-output="courseCode">[Course Code]</div>
+            <div class="metadata-label">Course Name</div><div class="metadata-colon">:</div><div class="metadata-value" data-output="courseName">[Course Name]</div>
+            <div class="metadata-label">Level-Term</div><div class="metadata-colon">:</div><div class="metadata-value" data-output="levelTerm">[Level-Term]</div>
+            <div class="metadata-label">Experiment No</div><div class="metadata-colon">:</div><div class="metadata-value" data-output="experimentNumber">[Experiment No]</div>
+            <div class="metadata-label">Experiment Name</div><div class="metadata-colon">:</div><div class="metadata-value" data-output="experimentName">[Experiment Name]</div>
+            <div class="metadata-label">Date of Submission</div><div class="metadata-colon">:</div><div class="metadata-value" data-output="submissionDate">[DD.MM.YYYY]</div>
+          </section>
+
+          <section class="evaluation" aria-label="Teacher's evaluation">
+            <p class="evaluation-label">Remarks:</p>
+          </section>
+
+          <table class="signoff" aria-label="Submission details">
+            <tbody>
+              <tr>
+                <td>
+                  <p class="signoff-heading">Submitted By</p>
+                  <p class="student-details">
+                    Name: <span data-output="studentName">[Student Name]</span><br>
+                    ID: <span data-output="studentId">[Student ID]</span><br>
+                    Session: <span data-output="session">[YYYY-YYYY]</span><br>
+                    Section: <span data-output="section">[Section]</span><br>
+                    Group: <span data-output="group">[Group]</span>
+                  </p>
+                </td>
+                <td class="signoff-right">
+                  <p class="signoff-heading">Submitted To</p>
+                  <p class="teacher-details">
+                    <span data-output="teacherName">[Teacher Name]</span><br>
+                    <span data-output="designation">[Designation]</span><br>
+                    Department of <span data-output="teacherDepartment">Computer Science and Engineering</span>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </main>
+      </div>
+    </div>
+  </div>
+  <script>
+    const form = document.getElementById("cover-form");
+    const placeholderValues = {
+      courseCode: "[Course Code]",
+      courseName: "[Course Name]",
+      levelTerm: "[Level-Term]",
+      experimentNumber: "[Experiment No]",
+      experimentName: "[Experiment Name]",
+      submissionDate: "[DD.MM.YYYY]",
+      studentName: "[Student Name]",
+      studentId: "[Student ID]",
+      session: "[YYYY-YYYY]",
+      section: "[Section]",
+      group: "[Group]",
+      teacherName: "[Teacher Name]",
+      designation: "[Designation]"
+    };
+    const departments = {
+      TE: "Textile Engineering",
+      CSE: "Computer Science and Engineering",
+      EEE: "Electrical and Electronic Engineering",
+      IPE: "Industrial and Production Engineering",
+      FDAE: "Fashion Design and Apparel Engineering"
+    };
+    const status = document.getElementById("export-status");
+    const preview = document.querySelector(".preview");
+    const paperStage = document.getElementById("paper-stage");
+    const coverPage = document.getElementById("cover-page");
+
+    function updatePreviewScale() {
+      const previewStyle = getComputedStyle(preview);
+      const horizontalPadding = parseFloat(previewStyle.paddingLeft) + parseFloat(previewStyle.paddingRight);
+      const availableWidth = preview.clientWidth - horizontalPadding;
+      const scale = Math.min(1, availableWidth / coverPage.offsetWidth);
+      paperStage.style.width = `${coverPage.offsetWidth * scale}px`;
+      paperStage.style.height = `${coverPage.offsetHeight * scale}px`;
+      coverPage.style.setProperty("--preview-scale", scale);
+      coverPage.dataset.previewScale = String(scale);
+    }
+
+    function updatePreview() {
+      const department = departments[form.elements.namedItem("department").value];
+      for (const output of document.querySelectorAll('[data-output="department"]')) {
+        output.textContent = department;
+      }
+
+      const teacherDepartment = departments[form.elements.namedItem("teacherDepartment").value];
+      for (const output of document.querySelectorAll('[data-output="teacherDepartment"]')) {
+        output.textContent = teacherDepartment || "[Teacher Department]";
+      }
+
+      for (const [name, placeholder] of Object.entries(placeholderValues)) {
+        const value = form.elements.namedItem(name).value.trim();
+        for (const output of document.querySelectorAll(`[data-output="${name}"]`)) {
+          output.textContent = value || placeholder;
+        }
+      }
+    }
+
+    function getFileName(extension) {
+      const courseCode = form.elements.namedItem("courseCode").value.trim();
+      const department = form.elements.namedItem("department").value;
+      const baseName = [department, courseCode, "lab-report-cover"]
+        .filter(Boolean)
+        .join("-")
+        .replace(/[<>:"/\\|?*\x00-\x1f]/g, "-")
+        .replace(/\s+/g, "-");
+      return `${baseName}.${extension}`;
+    }
+
+    function downloadBlob(blob, fileName) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      link.hidden = true;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function getLogoDataUrl() {
+      const image = document.querySelector(".institution-logo");
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      const context = canvas.getContext("2d");
+      if (!context || !image.naturalWidth) {
+        throw new Error("The NITER logo could not be loaded for export.");
+      }
+      context.drawImage(image, 0, 0);
+      return canvas.toDataURL("image/png");
+    }
+
+    function makeWordDocument() {
+      const cover = document.getElementById("cover-page").cloneNode(true);
+      cover.removeAttribute("id");
+      cover.querySelector(".institution-logo").src = getLogoDataUrl();
+      cover.style.width = "auto";
+      cover.style.height = "246.2mm";
+      cover.style.minHeight = "246.2mm";
+      cover.style.margin = "0";
+      cover.style.padding = "0";
+      cover.style.boxShadow = "none";
+      const styles = `
+        @page { size: A4; margin: 25.4mm; }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; color: #111; font-family: "Times New Roman", Times, serif; font-size: 12pt; }
+        .page { display: flex; flex-direction: column; }
+        .institution { text-align: center; }
+        .institution-logo { display: block; width: 25mm; height: auto; max-height: 25mm; margin: 0 auto 3mm; }
+        .institution-name { margin: 0; font-size: 13.5pt; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+        .acronym { margin: 1mm 0 0; font-size: 14pt; font-weight: 700; line-height: 1.15; }
+        .address { margin: 1mm 0 0; font-size: 11pt; line-height: 1.15; }
+        .department { margin: 3mm 0 0; font-size: 12pt; font-weight: 700; line-height: 1.15; }
+        .metadata { margin-top: 12mm; display: grid; grid-template-columns: 42mm 5mm minmax(0, 1fr); row-gap: 4mm; align-items: start; }
+        .metadata-label { white-space: nowrap; }
+        .metadata-colon { text-align: center; }
+        .metadata-value { min-width: 0; }
+        .evaluation { height: 30mm; flex: 0 0 30mm; margin-top: 12mm; border: 1px solid #222; padding: 3mm 4mm; }
+        .evaluation-label { margin: 0; color: #c00000; font-weight: 700; }
+        .signoff { width: 100%; margin-top: auto; border-collapse: collapse; table-layout: fixed; }
+        .signoff td { width: 50%; height: 57mm; border: 1px solid #222; vertical-align: top; padding: 5mm; }
+        .signoff-right { text-align: center; }
+        .signoff-heading { margin: 0 0 5mm; text-align: center; font-weight: 700; text-decoration: underline; }
+        .student-details, .teacher-details { margin: 0; line-height: 1.7; }
+      `;
+      return `<!doctype html><html><head><meta charset="utf-8"><style>${styles}</style></head><body>${cover.outerHTML}</body></html>`;
+    }
+
+    function makeImageBlob(format) {
+      const svgNamespace = "http://www.w3.org/2000/svg";
+      const htmlNamespace = "http://www.w3.org/1999/xhtml";
+      const pageWidth = 794;
+      const pageHeight = 1123;
+      const outputWidth = 2480;
+      const outputHeight = 3508;
+      const page = coverPage.cloneNode(true);
+      page.removeAttribute("id");
+      page.style.cssText = `position:relative!important;top:auto!important;left:auto!important;width:${pageWidth}px!important;height:${pageHeight}px!important;min-height:${pageHeight}px!important;margin:0!important;padding:96px!important;transform:none!important;box-shadow:none!important;`;
+      page.querySelector(".institution-logo").src = getLogoDataUrl();
+
+      const svg = document.createElementNS(svgNamespace, "svg");
+      svg.setAttribute("xmlns", svgNamespace);
+      svg.setAttribute("width", String(outputWidth));
+      svg.setAttribute("height", String(outputHeight));
+      svg.setAttribute("viewBox", `0 0 ${pageWidth} ${pageHeight}`);
+
+      const foreignObject = document.createElementNS(svgNamespace, "foreignObject");
+      foreignObject.setAttribute("width", String(pageWidth));
+      foreignObject.setAttribute("height", String(pageHeight));
+
+      const root = document.createElementNS(htmlNamespace, "div");
+      root.setAttribute("style", `width:${pageWidth}px;height:${pageHeight}px;overflow:hidden;background:#fff;`);
+      const styles = document.createElementNS(htmlNamespace, "style");
+      styles.textContent = `${document.querySelector("style").textContent}
+        .page {
+          position: relative !important;
+          top: auto !important;
+          left: auto !important;
+          width: ${pageWidth}px !important;
+          height: ${pageHeight}px !important;
+          min-height: ${pageHeight}px !important;
+          margin: 0 !important;
+          padding: 96px !important;
+          transform: none !important;
+          box-shadow: none !important;
+        }`;
+      root.append(styles, page);
+      foreignObject.append(root);
+      svg.append(foreignObject);
+
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const imageUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgData)}`;
+
+      return new Promise((resolve, reject) => {
+        const rendered = new Image();
+        rendered.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = outputWidth;
+          canvas.height = outputHeight;
+          const context = canvas.getContext("2d");
+          if (!context) {
+            reject(new Error("Your browser could not create the image export."));
+            return;
+          }
+          if (format === "image/jpeg") {
+            context.fillStyle = "#fff";
+            context.fillRect(0, 0, outputWidth, outputHeight);
+          }
+          context.drawImage(rendered, 0, 0, outputWidth, outputHeight);
+          canvas.toBlob((blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error("Your browser could not encode the image."));
+            }
+          }, format, 0.95);
+        };
+        rendered.onerror = () => reject(new Error("The cover could not be rendered as an image in this browser."));
+        rendered.src = imageUrl;
+      });
+    }
+
+    async function downloadImage(format) {
+      status.textContent = "Preparing image…";
+      try {
+        const extension = format === "image/png" ? "png" : "jpg";
+        const blob = await makeImageBlob(format);
+        downloadBlob(blob, getFileName(extension));
+        status.textContent = `${extension.toUpperCase()} downloaded.`;
+      } catch (error) {
+        status.textContent = error.message;
+      }
+    }
+
+    form.addEventListener("input", updatePreview);
+    form.addEventListener("change", updatePreview);
+    window.addEventListener("resize", updatePreviewScale);
+    new ResizeObserver(updatePreviewScale).observe(preview);
+    updatePreviewScale();
+    document.getElementById("download-pdf").addEventListener("click", () => {
+      status.textContent = "In the print dialog, choose Save as PDF.";
+      window.print();
+    });
+    document.getElementById("download-doc").addEventListener("click", () => {
+      const wordDocument = new Blob(["\ufeff", makeWordDocument()], { type: "application/msword" });
+      downloadBlob(wordDocument, getFileName("doc"));
+      status.textContent = "Word-compatible document downloaded.";
+    });
+    document.getElementById("download-png").addEventListener("click", () => downloadImage("image/png"));
+    document.getElementById("download-jpg").addEventListener("click", () => downloadImage("image/jpeg"));
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      updatePreview();
+    });
+  </script>
+</body>
+</html>
